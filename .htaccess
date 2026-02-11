@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# 1. Перенаправление с .html на адрес без расширения (для SEO)
+RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
+RewriteRule ^ /%1 [L,R=301]
+
+# 2. Внутренний подбор файла .html при запросе без расширения
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]

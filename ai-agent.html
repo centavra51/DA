@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent | Внедрение ИИ-агента для бизнеса</title>
+    <meta name="description"
+        content="Внедрение AI-агента для автоматизации продаж. Не упускайте клиентов - отвечайте 24/7 с помощью умного чат-бота.">
+    <meta name="keywords" content="AI агент, чат-бот, автоматизация продаж, ИИ для бизнеса, RAG технология">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23ff4d2e' width='100' height='100'/><text x='50' y='65' font-family='serif' font-size='70' font-weight='bold' fill='white' text-anchor='middle'>D</text></svg>">
+
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' https: data:; 
+        script-src 'self' 'unsafe-inline'; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+        font-src 'self' https://fonts.gstatic.com; 
+        img-src 'self' data: https:;
+    ">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .ai-hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 77, 46, 0.15), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(40, 208, 200, 0.1), transparent 50%);
+            pointer-events: none;
+        }
+
+        .ai-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .ai-hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #fff 0%, #28d0c8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-hero p {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .ai-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 80px 0;
+        }
+
+        .ai-stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .ai-stat-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .ai-stat-num {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .ai-stat-label {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .ai-feature-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 50px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-feature-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #28d0c8);
+        }
+
+        .ai-feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .ai-feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .ai-feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #28d0c8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .ai-pricing-special {
+            background: linear-gradient(135deg, rgba(255, 77, 46, 0.1), rgba(40, 208, 200, 0.05));
+            border: 2px solid var(--accent);
+            border-radius: 30px;
+            padding: 60px;
+            text-align: center;
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .ai-pricing-special h3 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .ai-price-tag {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 30px 0;
+        }
+
+        .ai-price-tag small {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .ai-process-timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .ai-timeline-item {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .ai-timeline-num {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), #28d0c8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-timeline-item:not(:last-child) .ai-timeline-num::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 2px;
+            height: 70px;
+            background: linear-gradient(180deg, var(--accent), rgba(255, 77, 46, 0.2));
+            transform: translateX(-50%);
+        }
+
+        .ai-timeline-content {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .ai-timeline-content h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+
+        .ai-cta-box {
+            background: linear-gradient(135deg, var(--accent) 0%, #28d0c8 100%);
+            border-radius: 30px;
+            padding: 80px 60px;
+            text-align: center;
+            margin: 80px 0;
+        }
+
+        .ai-cta-box h2 {
+            font-size: 3rem;
+            color: #000;
+            margin-bottom: 30px;
+        }
+
+        .ai-cta-box p {
+            font-size: 1.3rem;
+            color: rgba(0, 0, 0, 0.8);
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .ai-feature-box {
+                padding: 30px 20px;
+            }
+
+            .ai-pricing-special {
+                padding: 40px 20px;
+            }
+
+            .ai-timeline-item {
+                grid-template-columns: 60px 1fr;
+                gap: 20px;
+            }
+
+            .ai-timeline-num {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .ai-cta-box {
+                padding: 50px 30px;
+            }
+
+            .ai-cta-box h2 {
+                font-size: 2rem;
+            }
+        }
+
+        #ai-lead-form input::placeholder {
+            color: rgba(0, 0, 0, 0.6);
+            opacity: 1;
+            /* Ensure consistent rendering across browsers */
+        }
+
+        /* Redesigned Pain Points (Dark Theme) */
+        .ai-problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 60px;
+        }
+
+        .ai-problem-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 40px;
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-problem-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .ai-problem-card .icon-box {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 0 10px rgba(40, 208, 200, 0.3));
+        }
+
+        .ai-problem-card h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+
+        .ai-problem-card p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+        }
+
+        .ai-problem-card strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .ai-problem-card {
+                padding: 30px;
+            }
+        }
+
+        /* Product Cards & Animated Descriptions */
+        .ai-products-stack {
+            display: grid;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .ai-product-card-v2 {
+            display: flex;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 32px;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .ai-product-card-v2:hover {
+            transform: translateY(-10px) scale(1.01);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--accent);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 77, 46, 0.1);
+        }
+
+        .ai-product-info-col {
+            padding: 60px;
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ai-product-info-col h3 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+            transition: transform 0.4s ease;
+        }
+
+        .ai-product-card-v2:hover .ai-product-info-col h3 {
+            transform: translateX(10px);
+            color: var(--accent);
+        }
+
+        .product-subtitle {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+            transition: all 0.5s ease 0.1s;
+        }
+
+        .ai-product-card-v2:hover .product-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            transform: translateX(10px);
+        }
+
+        .ai-features-v2 {
+            margin-bottom: 40px;
+            transition: all 0.5s ease 0.2s;
+        }
+
+        .ai-product-card-v2:hover .ai-features-v2 {
+            transform: translateX(10px);
+        }
+
+        .ai-features-v2 ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ai-features-v2 li {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
+
+        .ai-product-card-v2:hover .ai-features-v2 li {
+            color: rgba(255, 255, 255, 0.8);
+            transform: translateX(10px);
+        }
+
+        /* Staggered Feature Reveal */
+        .ai-features-v2 li:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+
+        .ai-features-v2 li:nth-child(2) {
+            transition-delay: 0.15s;
+        }
+
+        .ai-features-v2 li:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+        .ai-features-v2 li:nth-child(4) {
+            transition-delay: 0.25s;
+        }
+
+        .ai-features-v2 li:nth-child(5) {
+            transition-delay: 0.3s;
+        }
+
+        .ai-product-card-v2:hover .product-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            transform: translate(10px, -5px);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .ai-product-info-col {
+            transition: background 0.4s ease;
+        }
+
+        .ai-product-card-v2:hover .ai-product-info-col {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(5px);
+        }
+
+        .ai-visual-col {
+            flex: 0.8;
+            background: radial-gradient(circle at center, rgba(255, 77, 46, 0.05), transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .ai-visual-col svg {
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ai-product-card-v2:hover .ai-visual-col svg {
+            transform: scale(1.2) rotate(5deg);
+            filter: drop-shadow(0 0 30px rgba(255, 77, 46, 0.3));
+        }
+
+        .hit-badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(255, 77, 46, 0.3);
+        }
+
+        .ai-price-row-v2 {
+            margin-top: auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .ai-price-tag-v2 {
+            font-size: clamp(1rem, 1.3vw, 1.2rem);
+            font-weight: 600;
+            color: var(--accent);
+            flex: 1 0 auto;
+        }
+
+        .ai-roi-badge-v2 {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-style: italic;
+            white-space: normal;
+            max-width: 280px;
+            line-height: 1.3;
+        }
+
+        .ai-actions-v2 {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .ai-btn-v2 {
+            padding: 14px 28px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .ai-btn-solid {
+            background: #fff;
+            color: #000;
+        }
+
+        .ai-btn-solid:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .ai-btn-outline {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .ai-btn-outline:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .tg-example-link {
+            color: #00d2ff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            background: rgba(0, 210, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 100px;
+        }
+
+        .tg-example-link:hover {
+            color: #fff;
+            background: #00d2ff;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        /* Reveal Sequence Animations */
+        .ai-product-card-v2 .ai-product-info-col h3,
+        .ai-product-card-v2 .product-subtitle,
+        .ai-product-card-v2 .ai-features-v2,
+        .ai-product-card-v2 .ai-actions-v2,
+        .ai-product-card-v2 .ai-price-row-v2,
+        .ai-product-card-v2 .ai-visual-col svg {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .ai-product-card-v2:hover .ai-product-info-col h3,
+        .ai-product-card-v2:hover .product-subtitle,
+        .ai-product-card-v2:hover .ai-features-v2 {
+            transition: all 0.4s ease;
+        }
+
+        .ai-product-card-v2.active .ai-product-info-col h3 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+
+        .ai-product-card-v2.active .product-subtitle {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.3s;
+        }
+
+        .ai-product-card-v2.active .ai-features-v2 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.4s;
+        }
+
+        .ai-product-card-v2.active .ai-actions-v2 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.5s;
+        }
+
+        .ai-product-card-v2.active .ai-price-row-v2 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+
+        .ai-product-card-v2.active .ai-visual-col svg {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition-delay: 0.4s;
+        }
+
+        @media (max-width: 992px) {
+            .ai-product-card-v2 {
+                flex-direction: column;
+            }
+
+            .ai-visual-col {
+                order: -1;
+                border-left: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 40px;
+            }
+
+            .ai-product-info-col {
+                padding: 40px;
+            }
+        }
+
+        /* Brain Flow Section */
+        .brain-flow-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .brain-node {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            transition: all 0.5s ease;
+        }
+
+        .brain-node:hover {
+            background: rgba(255, 77, 46, 0.05);
+            border-color: var(--accent);
+            transform: translateY(-10px);
+        }
+
+        .node-icon-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .node-icon {
+            font-size: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pulse-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            opacity: 0;
+            animation: pulse-out 2s infinite;
+        }
+
+        .pulse-ring.highlight {
+            border-color: #28d0c8;
+            animation: pulse-out 2s infinite 1s;
+        }
+
+        @keyframes pulse-out {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1.6);
+                opacity: 0;
+            }
+        }
+
+        .brain-node h3 {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .brain-node p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+        }
+
+        .flow-arrow {
+            align-self: center;
+            margin-top: -60px;
+        }
+
+        .dash-anim {
+            stroke-dasharray: 5;
+            animation: dash-flow 2s linear infinite;
+        }
+
+        @keyframes dash-flow {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .flow-arrow {
+                display: none;
+            }
+
+            .brain-node {
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body class="luxury-dark" oncontextmenu="return false;">
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <div class="logo">Digital.<span class="accent">Architect</span></div>
+            <button class="burger-btn" onclick="toggleMobileMenu()">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </button>
+            <div class="nav-center-group">
+                <div class="nav-links">
+                    <a href="index.html" data-i18n="nav-home">Главная</a>
+                    <a href="portfolio.html" data-i18n="nav-port">Проекты</a>
+                    <a href="index.html#services" data-i18n="nav-services">Услуги</a>
+                    <a href="ai-agent.html" data-i18n="nav-ai-agent">AI Агент</a>
+                    <a href="#pricing" data-i18n="nav-price">Стоимость</a>
+                </div>
+            </div>
+            <div class="nav-right-group">
+                <a href="#contact" class="btn-primary small-btn" data-i18n="nav-contact">Начать проект</a>
+                <div class="lang-switcher-capsule">
+                    <button onclick="changeLang('ru')" class="lang-btn active">RU</button>
+                    <button onclick="changeLang('en')" class="lang-btn">EN</button>
+                    <button onclick="changeLang('ro')" class="lang-btn">RO</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="ai-hero">
+        <div class="container ai-hero-content">
+            <div class="label-wrapper reveal">
+                <div class="label-pill" data-i18n="ai-hero-label">AI AUTOMATION 2026</div>
+            </div>
+            <h1 class="reveal delay-1 ai-hero-title" style="font-size: clamp(2.8rem, 8vw, 5.5rem);">
+                <span data-i18n="ai-hero-title">ПОКА ВЫ ЧИТАЕТЕ ЭТО,<br>КОНКУРЕНТ УЖЕ <span
+                        style='color: var(--accent);'>ОТВЕЧАЕТ</span> ВАШЕМУ КЛИЕНТУ</span>
+            </h1>
+            <p class="reveal delay-2 hero-description" style="max-width: 800px; margin: 0 auto;"
+                data-i18n="ai-hero-desc">
+                Мы подключаем "умное сито", которое 24/7 отсеивает "просто спросить" и доставляет вам только тех, кто
+                готов платить.
+            </p>
+            <div class="hero-buttons reveal delay-3">
+                <a href="#contact" class="btn-primary" data-i18n="ai-btn-trial">Начать 7-дневный пробный период</a>
+                <a href="#pricing" class="btn-text" data-i18n="ai-btn-pricing">Посмотреть цены →</a>
+            </div>
+            <p class="reveal delay-3" style="font-size: 0.9rem; margin-top: 20px; opacity: 0.7;"
+                data-i18n="ai-hero-sub">
+                * Демонстрация ИИ-Менеджера доступна в чат-виджете справа внизу (WhatsApp / Telegram)
+            </p>
+        </div>
+    </header>
+
+    <!-- Super-Power Section -->
+    <section class="section" style="background: #080808; padding: 120px 0;">
+        <div class="container">
+            <div class="reveal center-content" style="text-align: center; max-width: 950px; margin: 0 auto;">
+                <h2 class="serif-title"
+                    style="font-size: clamp(2.5rem, 6vw, 4.2rem); margin-top: 20px; margin-bottom: 40px; line-height: 1.1;">
+                    <span data-i18n="ai-super-title">Наделите отдел продаж <span
+                            style='color: var(--accent);'>супер-силой</span></span>
+                </h2>
+
+                <p style="font-size: 1.25rem; color: rgba(255,255,255,0.6); margin-bottom: 60px;"
+                    data-i18n="ai-super-teaser">
+                    Этот чат в углу — пример работы ИИ-Менеджера в реальном времени.
+                </p>
+
+                <div style="margin: 80px 0; display: flex; justify-content: center; align-items: center; opacity: 0.8;">
+                    <div
+                        style="width: 100%; max-width: 600px; height: 3px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent)); position: relative;">
+                        <div
+                            style="position: absolute; right: -2px; top: -11px; width: 25px; height: 25px; border-right: 3px solid var(--accent); border-top: 3px solid var(--accent); transform: rotate(45deg);">
+                        </div>
+                    </div>
+                </div>
+
+                <p style="font-size: clamp(1.3rem, 2.5vw, 1.6rem); line-height: 1.7; color: rgba(255,255,255,0.9); margin-bottom: 100px; font-weight: 400;"
+                    data-i18n="ai-super-desc">
+                    Он не просто имитирует общение. Он ведет клиента по воронке: задает правильные вопросы, отсеивает
+                    нецелевых и передает вам в Telegram/CRM уже «горячего» лида со всеми контактами и задачами.
+                </p>
+
+                <div
+                    style="background: #fff; color: #000; padding: 60px 40px; border-radius: 40px; text-align: center; transform: perspective(1000px) rotateX(2deg); box-shadow: 0 40px 100px rgba(0,0,0,0.6);">
+                    <p style="font-size: 1.3rem; font-weight: 500; line-height: 1.6; max-width: 800px; margin: 0 auto; color: #080808;"
+                        data-i18n="ai-super-footer">
+                        Такого же помощника мы можем запустить для вас не только на сайте, но и в WhatsApp или Telegram.
+                        Оцените результат на бесплатном 7-дневном тест-драйве.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section dark-bg">
+        <div class="container">
+            <div class="ai-stats-grid reveal">
+                <div class="ai-stat-card"
+                    onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})"
+                    style="cursor: pointer;">
+                    <div class="ai-stat-num">100%</div>
+                    <div class="ai-stat-label" data-i18n="ai-stat1">Заявок обработано</div>
+                </div>
+                <div class="ai-stat-card"
+                    onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})"
+                    style="cursor: pointer;">
+                    <div class="ai-stat-num">24/7</div>
+                    <div class="ai-stat-label" data-i18n="ai-stat2">Работа без выходных</div>
+                </div>
+                <div class="ai-stat-card"
+                    onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})"
+                    style="cursor: pointer;">
+                    <div class="ai-stat-num">&lt;30с</div>
+                    <div class="ai-stat-label" data-i18n="ai-stat3">Среднее время ответа</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="problems" class="section"
+        style="background: #0a0a0a; padding: 100px 0; position: relative; overflow: hidden;">
+        <div
+            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 50% 50%, rgba(40, 208, 200, 0.05), transparent 70%); pointer-events: none;">
+        </div>
+        <div class="container" style="position: relative; z-index: 1;">
+            <div class="reveal center-content" style="max-width: 900px; margin: 0 auto; text-align: center;">
+                <h2 class="serif-title"
+                    style="color: #fff; font-size: clamp(2.5rem, 6vw, 4.2rem); line-height: 1.1; margin-bottom: 50px;">
+                    <span data-i18n="ai-problem-title">Почему 9 из 10 заявок с вашего сайта не доходят до сделки?</span>
+                </h2>
+            </div>
+
+            <div class="ai-problems-grid">
+                <div class="ai-problem-card reveal">
+                    <div class="icon-box">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                            stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="ai-prob1-title">Слишком медленно</h3>
+                    <p data-i18n="ai-prob1-desc">Клиент написал ночью. Ваш менеджер ответил утром. Конкурент, у которого
+                        стоит ИИ-Менеджер, ответил за 20-25 секунд. Клиент уже купил у них.</p>
+                    <a href="#pricing" class="btn-text" style="font-size: 0.9rem; padding: 0; margin-top: auto;"
+                        data-i18n="btn-learn-price">Посмотреть цены →</a>
+                </div>
+                <div class="ai-problem-card reveal delay-1">
+                    <div class="icon-box">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                            stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="ai-prob2-title">Куча нецелевых</h3>
+                    <p data-i18n="ai-prob2-desc">Ваш лучший продавец тратит 2 часа на 'пустые' диалоги с теми, кто
+                        'просто спросить'. За это время он мог бы закрыть реальную сделку. Наш ИИ-Менеджер берет
+                        весь мусор на себя.</p>
+                    <a href="#pricing" class="btn-text" style="font-size: 0.9rem; padding: 0; margin-top: auto;"
+                        data-i18n="btn-learn-price">Посмотреть цены →</a>
+                </div>
+                <div class="ai-problem-card reveal delay-2">
+                    <div class="icon-box">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                            stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18" cy="18" r="3" />
+                            <circle cx="6" cy="6" r="3" />
+                            <path d="M18 15V9a6 6 0 0 0-6-6 6 6 0 0 0-6 6v6" />
+                        </svg>
+                    </div>
+                    <h3 data-i18n="ai-prob3-title">Неразбериха и хаос</h3>
+                    <p data-i18n="ai-prob3-desc">Заявки с сайта, из WhatsApp, из Telegram... Все сыпется в разные места
+                        и теряется. <strong>Наш ИИ-Менеджер собирает горячих лидов из всех каналов в одно место</strong>
+                        и передает их вашим менеджерам.</p>
+                    <a href="#pricing" class="btn-text" style="font-size: 0.9rem; padding: 0; margin-top: auto;"
+                        data-i18n="btn-learn-price">Посмотреть цены →</a>
+                </div>
+            </div>
+
+            <div class="reveal"
+                style="margin-top: 60px; border-left: 4px solid var(--accent); padding-left: 30px; max-width: 800px;">
+                <span class="sub-label" style="color: var(--accent); font-weight: 700;"
+                    data-i18n="ai-sol-label">Решение</span>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9); line-height: 1.6;"
+                    data-i18n="ai-solution-desc">
+                    Мы подключаем AI-агента, который живет на сайте, в WhatsApp и Telegram. Он подключается к диалогу за
+                    2 часа (технически) и реагирует за 5 секунд.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="process" class="section" style="background: #080808; padding: 120px 0;">
+        <div class="container">
+            <div class="reveal center-content" style="text-align: center; max-width: 950px; margin: 0 auto;">
+                <h2 class="serif-title"
+                    style="font-size: clamp(2.5rem, 6vw, 4.2rem); margin-bottom: 35px; line-height: 1.1;">
+                    <span data-i18n="ai-process-title">Что означает <span style='color: var(--accent);'>7-дневный
+                            тест-драйв</span>?</span>
+                </h2>
+                <p style="font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: rgba(255,255,255,0.75); line-height: 1.5; margin-bottom: 50px;"
+                    data-i18n="ai-process-desc">
+                    Мы создаем для вас персональный Telegram-чат. <b>Это ваш прямой канал связи с основателем
+                        проекта.</b>
+                </p>
+                <div style="font-size: 1.25rem; color: rgba(255,255,255,0.9); line-height: 1.8; text-align: center; max-width: 850px; margin: 0 auto;"
+                    data-i18n="ai-process-desc-ext">
+                    В этот чат будут <b>автоматически приходить готовые, отфильтрованные лиды. А я лично проконтролирую
+                        3 ключевых этапа вашего 7-дневного тест-драйва:</b><br><br>
+                    1. <b>Запуск:</b> Проверю, что все корректно стартовало.<br>
+                    2. <b>Промежуточный итог (через 3-4 дня):</b> Дам краткий анализ первых результатов.<br>
+                    3. <b>Финальный отчет:</b> В конце 7-го дня подготовлю для вас полные выводы.
+                </div>
+            </div>
+
+            <div class="reveal center-content" style="margin-top: 80px; text-align: center;">
+                <p style="font-size: 1.15rem; color: rgba(255,255,255,0.6); max-width: 750px; margin: 0 auto;"
+                    data-i18n="ai-founder-msg">
+                    Никаких менеджеров и глухих телефонов. <b>Ваш проект ведет лично тот, кто его создал.</b>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="section">
+        <div class="container">
+            <div class="section-header reveal center-content">
+                <h2 class="serif-title" style="font-size: clamp(2.5rem, 6vw, 4.2rem); margin-bottom: 60px;"
+                    data-i18n="ai-pricing-title"><span style='color: var(--accent);'>Наши Продукты</span>: Готовые
+                    ИИ-Решения для Вашего Роста.</h2>
+            </div>
+
+            <div class="ai-products-stack">
+                <!-- Card 1 -->
+                <div class="ai-product-card-v2 reveal">
+                    <div class="ai-product-info-col">
+                        <h3 data-i18n="ai-prod1-title">ИИ-Менеджер для Сайта</h3>
+                        <p class="product-subtitle" data-i18n="ai-prod1-desc">Наш главный продукт. Превращает ваш сайт в
+                            круглосуточного сотрудника, который 24/7 отсеивает 'мусорные заявки' и передает 'горячих'
+                            лидов вашим менеджерам.</p>
+
+                        <div class="ai-features-v2">
+                            <p data-i18n="ai-features-title">Что входит в решение:</p>
+                            <ul>
+                                <li data-i18n="ai-prod1-f1">- Текстовый ИИ-виджет для вашего сайта.</li>
+                                <li data-i18n="ai-prod1-f2">- Внедрение 'под ключ': мы сами все настроим и запустим за
+                                    вас.</li>
+                                <li data-i18n="ai-prod1-f3">- Адаптация под ваш бизнес: настроим 3-5 ключевых вопросов
+                                    для фильтрации лидов.</li>
+                                <li data-i18n="ai-prod1-f4">- Интеграция с вашим Telegram или Email для получения
+                                    заявок.</li>
+                            </ul>
+                        </div>
+
+                        <div class="ai-actions-v2">
+                            <a href="#contact" class="ai-btn-v2 ai-btn-solid" data-i18n="ai-btn-buy">Приобрести</a>
+                            <a href="#contact" class="ai-btn-v2 ai-btn-outline" data-i18n="ai-btn-try">Попробовать
+                                бесплатно</a>
+                        </div>
+
+                        <div class="ai-price-row-v2">
+                            <div class="ai-price-tag-v2" data-i18n="ai-prod1-price">$100 / месяц + $165 единоразовое
+                                внедрение</div>
+                            <div class="ai-roi-badge-v2" data-i18n="ai-prod1-roi">Окупаемость: с 1-й сделки*</div>
+                        </div>
+                    </div>
+                    <div class="ai-visual-col">
+                        <div class="hit-badge" data-i18n="ai-prod2-roi">Хит продаж</div>
+                        <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                            stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="ai-product-card-v2 reveal delay-1">
+                    <div class="ai-product-info-col">
+                        <h3 data-i18n="ai-prod2-title">ИИ-Менеджер для Мессенджеров</h3>
+                        <p class="product-subtitle" data-i18n="ai-prod2-desc">Тот же 'умный мозг', но для ваших соц.
+                            сетей. Превращает хаос в WhatsApp или Telegram в упорядоченный конвейер теплых лидов.
+                        </p>
+
+                        <div class="ai-features-v2">
+                            <p data-i18n="ai-features-title">Что входит в решение:</p>
+                            <ul>
+                                <li data-i18n="ai-prod2-f1">- Интеграция с 1 мессенджером на выбор (WhatsApp или
+                                    Telegram).</li>
+                                <li data-i18n="ai-prod2-f2">- Внедрение 'под ключ': мы полностью берем на себя всю
+                                    техническую часть.</li>
+                                <li data-i18n="ai-prod2-f3">- Адаптация под ваш бизнес: настроим 3-5 ключевых вопросов
+                                    для фильтрации лидов.</li>
+                                <li data-i18n="ai-prod2-f4">- Интеграция с вашим CRM / Telegram / Email для получения
+                                    горячих заявок.</li>
+                            </ul>
+                        </div>
+
+                        <div class="ai-actions-v2">
+                            <a href="#contact" class="ai-btn-v2 ai-btn-solid" data-i18n="ai-btn-buy">Приобрести</a>
+                            <a href="#contact" class="ai-btn-v2 ai-btn-outline" data-i18n="ai-btn-try">Попробовать
+                                бесплатно</a>
+                            <a href="#" class="tg-example-link">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                    style="color: #00d2ff;">
+                                    <path
+                                        d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                                </svg>
+                                <span data-i18n="ai-prod2-tg-example">Посмотреть пример в ТГ</span>
+                            </a>
+                        </div>
+
+                        <div class="ai-price-row-v2">
+                            <div class="ai-price-tag-v2" data-i18n="ai-prod2-price">$100 / месяц + $165 единоразовое
+                                внедрение</div>
+                            <div class="ai-roi-badge-v2">
+                                <span data-i18n="ai-prod2-add">Каждая дополнительная соц сеть: +$55 / мес.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ai-visual-col">
+                        <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                            stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="ai-product-card-v2 custom-card reveal delay-2">
+                    <div class="ai-product-info-col">
+                        <h3 data-i18n="ai-prod3-title">Индивидуальная разработка</h3>
+                        <p class="product-subtitle" data-i18n="ai-prod3-desc">Нестандартные сценарии/источники, особые
+                            правила отбора. Отдельный бриф, уникальные задачи.</p>
+
+                        <div class="ai-actions-v2">
+                            <a href="#contact" class="ai-btn-v2 ai-btn-dark" data-i18n="ai-btn-discuss">Обсудить</a>
+                        </div>
+
+                        <div class="ai-price-row-v2" style="margin-top: 20px;">
+                            <div class="ai-price-tag-v2" style="color: var(--accent); font-weight: 700;"
+                                data-i18n="ai-prod3-price">Цена: по ТЗ (индивидуально)</div>
+                            <div class="ai-roi-badge-v2" data-i18n="ai-prod3-roi"
+                                style="color: rgba(255,255,255,0.7); font-weight: 500;">
+                                Окупаемость: по расчёту под ваш кейс*</div>
+                        </div>
+                    </div>
+                    <div class="ai-visual-col">
+                        <svg width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                            stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                            <line x1="12" y1="2" x2="12" y2="22" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center-content reveal delay-2" style="margin-top: 50px;">
+                <a href="#contact" class="btn-primary" style="padding: 20px 40px; font-size: 1.2rem;"
+                    data-i18n="ai-cta-pilot">ЗАПУСТИТЬ МОЙ БЕСПЛАТНЫЙ ПИЛОТ</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header reveal center-content">
+                <span class="sub-label">FAQ</span>
+                <h2 class="serif-title" style="font-size: clamp(2.5rem, 6vw, 4.2rem);" data-i18n="ai-faq-title"><span
+                        style='color: var(--accent);'>Ответы</span> на вопросы</h2>
+            </div>
+
+            <!-- Category 1: Process and Results -->
+            <div style="margin-top: 50px;">
+                <h3 style="font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--accent);"
+                    data-i18n="ai-faq-cat1">Категория 1: Процесс и Результаты</h3>
+
+                <div class="faq-accordion reveal delay-1">
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq1-q">В чем подвох?</h4>
+                            <span class="faq-acc-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq1-a">
+                                Подвоха нет. Есть 7-дневный бесплатный тест-драйв. Мы не просим верить нам на слово. Мы
+                                предлагаем убедиться на практике. Мы уверены в нашем продукте, поэтому даем вам
+                                возможность проверить его в реальном бою на вашем сайте, не рискуя ничем.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq2-q">Окупится ли это?</h4>
+                            <span class="faq-acc-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq2-a">
+                                Да. Наш "ИИ-Менеджер" стоит в 2-3 раза дешевле зарплаты младшего менеджера, но работает
+                                24/7. В вашей нише один 'пойманный' клиент, которого вы раньше бы упустили, полностью
+                                окупает стоимость сервиса на несколько месяцев вперед. Тест-драйв как раз и создан,
+                                чтобы вы сами в этом убедились.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq3-q">Мне нужно будет настраивать самому?</h4>
+                            <span class="faq-acc-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq3-a">
+                                Именно поэтому мы не продаем "коробку". Наш главный принцип - "Внедрение 'под ключ'". На
+                                этапе настройки мы вместе с вами определяем 3-5 ключевых квалификационных вопросов,
+                                которые важны именно для вашего бизнеса. ИИ-Менеджер будет говорить на вашем языке и
+                                решать ваши задачи.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 2: Technical Details -->
+            <div style="margin-top: 60px;">
+                <h3 style="font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--accent);"
+                    data-i18n="ai-faq-cat2">Категория 2: Технические Детали</h3>
+
+                <div class="faq-accordion reveal delay-2">
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq4-q">Как проходит тест-драйв технически?</h4>
+                            <span class="faq-acc-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq4-a">
+                                Вы тестируете один из наших двух стартовых продуктов в реальных условиях. Либо
+                                "ИИ-Менеджера для Сайта" на вашем сайте, либо "ИИ-Менеджера для Мессенджеров" в одном из
+                                ваших каналов (WhatsApp, TG или VK). В тест-драйв входит базовая настройка под вас и
+                                доставка лидов в Telegram или на Email.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq5-q">Это сложно подключить?</h4>
+                            <span class="faq-acc-icon">+</span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq5-a">
+                                Максимально просто. Мы либо делаем это за вас через временный гостевой доступ, либо на
+                                5-минутном созвоне показываем, куда вставить несколько строчек кода. От вас не требуется
+                                никаких технических знаний.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq6-q">Не будет ли бот раздражать клиентов?</h4>
+                            <span class="faq-acc-icon">+</span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq6-a">
+                                Нет. Наоборот. Клиенты получают мгновенный ответ на свой вопрос, а не ждут часами. Наш
+                                "ИИ-Менеджер" обучен вести диалог вежливо, профессионально и по делу. Он не "тупой бот",
+                                а эффективный консультант, который повышает уровень вашего сервиса.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 3: Money and Conditions -->
+            <div style="margin-top: 60px;">
+                <h3 style="font-size: 1.5rem; text-align: center; margin-bottom: 30px; color: var(--accent);"
+                    data-i18n="ai-faq-cat3">Категория 3: Деньги и Условия</h3>
+
+                <div class="faq-accordion reveal delay-3">
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq7-q">Почему внедрение платное?</h4>
+                            <span class="faq-acc-icon">+</span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq7-a">
+                                Потому что это не "установка". Это - консалтинговая работа "под ключ". Мы тратим наше
+                                экспертное время, чтобы проанализировать ваши задачи и идеально адаптировать ассистента
+                                под ваш бизнес. Это также наш фильтр, который отсеивает "туристов" и позволяет нам
+                                фокусироваться на клиентах, серьезно настроенных на результат.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq8-q">Кому принадлежат лиды?</h4>
+                            <span class="faq-acc-icon">+</span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq8-a">
+                                Только вы. Всегда. Мы - лишь инструмент для обработки. Все данные, все лиды принадлежат
+                                вам.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-acc-item">
+                        <div class="faq-acc-header" onclick="toggleAccordion(this)">
+                            <h4 data-i18n="ai-faq9-q">Что если не будет результата за 7 дней?</h4>
+                            <span class="faq-acc-icon">+</span>
+                        </div>
+                        <div class="faq-acc-body">
+                            <div class="faq-acc-content" data-i18n="ai-faq9-a">
+                                Отличный, честный вопрос. Тест-драйв - это не просто тест, это бесплатная диагностика
+                                вашего бизнеса. И у него всегда положительный результат.<br><br>
+                                <strong>Сценарий 1:</strong> Вы получаете лиды. Отлично, мы доказали, что наш
+                                'ИИ-Помощник' приносит вам деньги, которые вы раньше теряли.<br><br>
+                                <strong>Сценарий 2:</strong> Вы не получаете лидов. Это еще более ценный результат.
+                                Значит, мы нашли вашу настоящую проблему — не 'обработку', а 'генерацию' трафика. В
+                                любом случае, вы получаете не 'ноль', а бесценный диагностический отчет о главном узком
+                                месте в вашей воронке. А под эту проблему у нас есть другие решения.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="ai-cta-box reveal">
+                <h2 style="font-size: clamp(2.5rem, 6vw, 4.2rem); color: #000; margin-bottom: 30px;"
+                    data-i18n="ai-cta-title">Не нашли свой вопрос?</h2>
+                <p data-i18n="ai-cta-desc" style="max-width: 700px; margin: 0 auto 30px;">
+                    Это значит, он достаточно серьезный, чтобы обсудить его лично с основателем. Лучший способ получить
+                    ответ - оставить быструю заявку на бесплатный тест-драйв. Я (Александр) лично изучу ваш вопрос и
+                    свяжусь с вами в Telegram для детального обсуждения.
+                </p>
+
+                <div style="background: rgba(0,0,0,0.2); border-radius: 20px; padding: 30px; margin: 40px 0;">
+                    <p style="font-size: 1.15rem; color: #000; font-weight: 600; margin-bottom: 10px;"
+                        data-i18n="ai-form-offer">
+                        Первые 7 дней — бесплатно
+                    </p>
+                    <p style="font-size: 1rem; color: rgba(0,0,0,0.8);" data-i18n="ai-form-noobligation">
+                        Никаких обязательств, платежных данных и сложных настроек. Только результат.
+                    </p>
+                </div>
+
+                <form id="ai-lead-form" class="reveal delay-2"
+                    style="max-width: 700px; margin: 0 auto; text-align: left;">
+                    <input type="text" name="bot-field" style="display:none !important;" tabindex="-1"
+                        autocomplete="off">
+
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: #000; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem;"
+                            data-i18n="form-label-contact">
+                            1. Ваш контакт для связи (номер / telegram / whatsapp)
+                        </label>
+                        <input type="text" name="contact" data-i18n-placeholder="form-placeholder-contact"
+                            placeholder="+373 67 732 256 или @username" required
+                            style="background: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.2); border-radius: 10px; padding: 15px; color: #000; width: 100%;">
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: #000; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem;"
+                            data-i18n="form-label-website">
+                            2. Сайт, для которого мы подготовим код виджета
+                        </label>
+                        <input type="url" name="website" data-i18n-placeholder="form-placeholder-website"
+                            placeholder="https://вашсайт.com" required
+                            style="background: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.2); border-radius: 10px; padding: 15px; color: #000; width: 100%;">
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <label
+                            style="display: block; color: #000; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem;"
+                            data-i18n="form-label-delivery">
+                            3. Куда присылать готовых лидов?
+                        </label>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 8px; color: #000; cursor: pointer;">
+                                <input type="radio" name="delivery" value="email" required style="width: auto;">
+                                <span data-i18n="form-delivery-email">На мой E-mail</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; color: #000; cursor: pointer;">
+                                <input type="radio" name="delivery" value="telegram" required style="width: auto;">
+                                <span data-i18n="form-delivery-telegram">В отдельную Telegram-группу</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary full-btn"
+                        style="background: #000; color: #fff; width: 100%; padding: 18px; font-size: 1.1rem;"
+                        data-i18n="btn-signup">Записаться</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-flex">
+            <div class="copy">
+                © 2026 Digital Architect. <br>
+                <span style="font-size: 0.8em; opacity: 0.5;">Protected by Copyright Law.</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://t.me/37367732256" class="social-link" target="_blank">Telegram</a>
+                <a href="https://wa.me/37367732256" class="social-link" target="_blank">WhatsApp</a>
+                <a href="mailto:iv.front.dev@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="chatbot-widget" id="chatbot-widget">
+        <div class="chat-header">
+            <div class="chat-title"><span class="online-dot"></span> <span data-i18n="chat-header">AI Assistant</span>
+            </div>
+            <button class="close-chat" onclick="toggleChat()">×</button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="bot-msg" data-i18n="chat-welcome" style="white-space: pre-line;"></div>
+        </div>
+        <div class="chat-input-area">
+            <div class="chat-input-row">
+                <input type="text" id="chat-input" data-i18n-placeholder="chat-placeholder" placeholder="...">
+                <button onclick="sendMessage()" class="send-btn">→</button>
+            </div>
+            <div class="chat-footer" data-i18n="chat-footer">Developed by Digital Architect</div>
+        </div>
+    </div>
+
+    <div class="chat-promo-badge" onclick="toggleChat()" id="chat-promo-badge">
+        <div class="promo-indicator"></div>
+        <span class="promo-text" id="promo-text"></span>
+    </div>
+    <div class="chat-main-button" onclick="toggleChat()" id="chat-main-button">
+        <div class="chat-button-indicator"></div>
+        <span class="chat-button-text" data-i18n="chat-ask">Ask a question</span>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <div class="mobile-nav-links">
+            <a href="index.html" class="mobile-nav-link" data-i18n="nav-home">Главная</a>
+            <a href="portfolio.html" class="mobile-nav-link" data-i18n="nav-port">Проекты</a>
+            <a href="index.html#services" class="mobile-nav-link" data-i18n="nav-services">Услуги</a>
+            <a href="ai-agent.html" class="mobile-nav-link" data-i18n="nav-ai-agent">AI Агент</a>
+            <a href="#pricing" class="mobile-nav-link" data-i18n="nav-price">Стоимость</a>
+        </div>
+        <div class="mobile-lang-switcher">
+            <div class="lang-switcher-capsule">
+                <button onclick="changeLang('ru')" class="lang-btn active">RU</button>
+                <button onclick="changeLang('en')" class="lang-btn">EN</button>
+                <button onclick="changeLang('ro')" class="lang-btn">RO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Direct Widget -->
+    <div class="contact-direct-widget">
+        <button class="contact-direct-btn" id="contactDirectBtn">
+            <span data-i18n="contact-direct-btn">Связаться напрямую</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
+        <div class="contact-direct-menu" id="contactDirectMenu">
+            <a href="https://t.me/alex_proweb" target="_blank" class="contact-option">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 8.8C16.49 10.38 15.84 14.22 15.51 15.99C15.37 16.74 15.09 16.99 14.83 17.02C14.25 17.07 13.81 16.64 13.25 16.27C12.37 15.69 11.87 15.33 11.02 14.77C10.03 14.12 10.67 13.76 11.24 13.18C11.39 13.03 13.95 10.7 14 10.49C14.0069 10.4582 14.006 10.4252 13.9973 10.3938C13.9886 10.3624 13.9724 10.3337 13.95 10.31C13.89 10.26 13.81 10.28 13.74 10.29C13.65 10.31 12.25 11.24 9.52 13.08C9.12 13.35 8.76 13.49 8.44 13.48C8.08 13.47 7.4 13.28 6.89 13.11C6.26 12.91 5.77 12.8 5.81 12.45C5.83 12.27 6.08 12.09 6.55 11.9C9.47 10.63 11.41 9.79 12.38 9.39C15.16 8.23 15.73 8.03 16.11 8.03C16.19 8.03 16.38 8.05 16.5 8.15C16.6 8.23 16.63 8.34 16.64 8.42C16.63 8.48 16.65 8.66 16.64 8.8Z"
+                        fill="currentColor" />
+                </svg>
+                <span>Telegram</span>
+            </a>
+            <a href="https://wa.me/37367732256" target="_blank" class="contact-option">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M17.472 14.382C17.015 14.154 14.963 13.145 14.567 13.001C14.172 12.857 13.889 12.785 13.606 13.242C13.323 13.699 12.553 14.647 12.301 14.93C12.049 15.213 11.797 15.244 11.34 15.016C10.883 14.788 9.431 14.316 7.713 12.785C6.374 11.594 5.486 10.126 5.234 9.669C4.982 9.212 5.206 8.976 5.434 8.748C5.64 8.542 5.891 8.212 6.119 7.96C6.347 7.708 6.419 7.517 6.563 7.234C6.707 6.951 6.635 6.699 6.521 6.471C6.407 6.243 5.525 4.185 5.16 3.271C4.795 2.357 4.43 2.479 4.178 2.479C3.926 2.479 3.643 2.479 3.36 2.479C3.077 2.479 2.62 2.593 2.225 3.05C1.83 3.507 0.759 4.516 0.759 6.574C0.759 8.632 2.256 10.629 2.484 10.912C2.712 11.195 5.486 15.485 9.692 17.274C10.719 17.727 11.524 17.996 12.153 18.208C13.18 18.543 14.115 18.512 14.863 18.398C15.703 18.284 17.381 17.397 17.746 16.418C18.111 15.439 18.111 14.647 17.997 14.461C17.883 14.275 17.6 14.161 17.143 13.933L17.472 14.382ZM12.05 21.785H12.047C10.286 21.785 8.556 21.301 7.047 20.394L6.686 20.182L2.897 21.214L3.947 17.518L3.711 17.144C2.721 15.579 2.196 13.771 2.196 11.932C2.196 6.684 6.434 2.446 11.682 2.446C14.207 2.446 16.579 3.415 18.364 5.2C20.149 6.985 21.118 9.357 21.118 11.882C21.118 17.13 16.88 21.368 11.632 21.368L12.05 21.785Z"
+                        fill="currentColor" />
+                </svg>
+                <span>WhatsApp</span>
+            </a>
+            <a href="mailto:iv.front.dev@gmail.com" class="contact-option">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"
+                        fill="currentColor" />
+                </svg>
+                <span>Email</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="ai-agent.js"></script>
+</body>
+
+</html>

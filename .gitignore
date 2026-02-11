@@ -1,0 +1,40 @@
+# Игнорируемые файлы для Git
+
+# Node modules (если используются)
+node_modules/
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Логи
+*.log
+npm-debug.log*
+
+# Временные файлы
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Файлы окружения
+.env
+.env.local
+.env.*.local
+
+# Кэш
+.cache/
+dist/
+build/
+
+# Резервные копии
+*.bak
+*.backup

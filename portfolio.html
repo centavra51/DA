@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Digital Architect</title>
+    <meta name="description" content="Portfolio of high-performance websites and AI automation projects.">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23ff4d2e' width='100' height='100'/><text x='50' y='65' font-family='serif' font-size='70' font-weight='bold' fill='white' text-anchor='middle'>D</text></svg>">
+
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' https: data:; 
+        script-src 'self' 'unsafe-inline'; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+        font-src 'self' https://fonts.gstatic.com; 
+        img-src 'self' data: https:;
+    ">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Portfolio page specific styles - minimal overrides */
+        /* Using default bento-grid styles from style.css */
+    </style>
+</head>
+
+<body class="luxury-dark" oncontextmenu="return false;">
+
+    <div id="loader">
+        <div class="loader-content">
+            <div class="brand-font">Digital.</div>
+            <div class="progress-bar">
+                <div id="progress"></div>
+            </div>
+            <span id="percent">0%</span>
+        </div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" style="text-decoration:none;">
+                <div class="logo">Digital.<span class="accent">Architect</span></div>
+            </a>
+            <button class="burger-btn" onclick="toggleMobileMenu()">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </button>
+            <div class="nav-center-group">
+                <div class="nav-links">
+                    <a href="index.html#portfolio" data-i18n="nav-port">Проекты</a>
+                    <a href="index.html#services" data-i18n="nav-services">Услуги</a>
+                    <a href="ai-agent.html" data-i18n="nav-ai-agent">AI Агент</a>
+                    <a href="index.html#pricing" data-i18n="nav-price">Стоимость</a>
+                </div>
+            </div>
+            <div class="nav-right-group">
+                <a href="#contact" class="btn-primary small-btn" data-i18n="nav-contact">Начать проект</a>
+                <div class="lang-switcher-capsule">
+                    <button onclick="changeLang('ru')" class="lang-btn active">RU</button>
+                    <button onclick="changeLang('en')" class="lang-btn">EN</button>
+                    <button onclick="changeLang('ro')" class="lang-btn">RO</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero/Header Section -->
+    <section class="section dark-bg" style="padding-top: 150px; min-height: 40vh; display: flex; align-items: center;">
+        <div class="container">
+            <div class="section-header reveal mb-large">
+                <span class="sub-label" data-i18n="port-page-subtitle">Selected Works</span>
+                <h1 class="serif-title" data-i18n="port-page-title">Портфолио</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Portfolio Grid -->
+    <section class="section">
+        <div class="container">
+            <!-- Dynamic portfolio cards will be loaded here -->
+            <div id="portfolio-cards-container" class="bento-grid reveal delay-1">
+            </div>
+        </div>
+    </section>
+
+    <!-- Global CTA -->
+    <section id="contact" class="section cta-section">
+        <div class="container center-content">
+            <h2 class="serif-title reveal" data-i18n="cta-title">Хватит терять клиентов.<br>Давайте работать.</h2>
+            <form id="lead-form" class="reveal delay-2">
+                <input type="text" name="bot-field" style="display:none !important;" tabindex="-1" autocomplete="off">
+                <div class="form-row">
+                    <input type="text" name="name" placeholder="Name" data-i18n-placeholder="form-name" required>
+                    <input type="text" name="contact" placeholder="Telegram / WhatsApp"
+                        data-i18n-placeholder="form-contact" required>
+                </div>
+
+                <div class="form-row">
+                    <select name="service" data-i18n-placeholder="form-service">
+                        <option value="" data-i18n="form-service-select">Выберите услугу (необязательно)</option>
+                        <option value="website" data-i18n="form-service-website">Разработка сайта</option>
+                        <option value="ai-agent" data-i18n="form-service-ai">AI Agent для бизнеса</option>
+                        <option value="automation" data-i18n="form-service-automation">Автоматизация процессов</option>
+                        <option value="consulting" data-i18n="form-service-consulting">Консультация</option>
+                        <option value="other" data-i18n="form-service-other">Другое</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <textarea name="message" placeholder="Ваше сообщение (необязательно)"
+                        data-i18n-placeholder="form-message" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary full-btn" data-i18n="btn-send">Получить консультацию</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-flex">
+            <div class="copy">
+                © 2026 Digital Architect. <br>
+                <span style="font-size: 0.8em; opacity: 0.5;">Protected by Copyright Law.</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://t.me/37367732256" class="social-link" target="_blank">Telegram</a>
+                <a href="https://wa.me/37367732256" class="social-link" target="_blank">WhatsApp</a>
+                <a href="mailto:iv.front.dev@gmail.com" class="social-link">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Reuse chatbot -->
+    <div class="chatbot-widget" id="chatbot-widget">
+        <div class="chat-header">
+            <div class="chat-title"><span class="online-dot"></span> <span data-i18n="chat-header">AI Assistant</span>
+            </div>
+            <button class="close-chat" onclick="toggleChat()">×</button>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="bot-msg" data-i18n="chat-welcome" style="white-space: pre-line;"></div>
+        </div>
+        <div class="chat-input-area">
+            <div class="chat-input-row">
+                <input type="text" id="chat-input" data-i18n-placeholder="chat-placeholder" placeholder="...">
+                <button onclick="sendMessage()" class="send-btn">→</button>
+            </div>
+            <div class="chat-footer" data-i18n="chat-footer">Developed by Digital Architect</div>
+        </div>
+    </div>
+    <div class="chat-promo-badge" onclick="toggleChat()" id="chat-promo-badge">
+        <div class="promo-indicator"></div>
+        <span class="promo-text" id="promo-text"></span>
+    </div>
+    <div class="chat-main-button" onclick="toggleChat()" id="chat-main-button">
+        <div class="chat-button-indicator"></div>
+        <span class="chat-button-text" data-i18n="chat-ask">Ask a question</span>
+    </div>
+
+    <!-- Portfolio data and rendering scripts -->
+    <script src="portfolio-data.js"></script>
+    <script src="portfolio-builder.js"></script>
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <div class="mobile-nav-links">
+            <a href="index.html#portfolio" class="mobile-nav-link" data-i18n="nav-port">Проекты</a>
+            <a href="index.html#services" class="mobile-nav-link" data-i18n="nav-services">Услуги</a>
+            <a href="ai-agent.html" class="mobile-nav-link" data-i18n="nav-ai-agent">AI Агент</a>
+            <a href="index.html#pricing" class="mobile-nav-link" data-i18n="nav-price">Стоимость</a>
+        </div>
+        <div class="mobile-lang-switcher">
+            <div class="lang-switcher-capsule">
+                <button onclick="changeLang('ru')" class="lang-btn active">RU</button>
+                <button onclick="changeLang('en')" class="lang-btn">EN</button>
+                <button onclick="changeLang('ro')" class="lang-btn">RO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Direct Widget -->
+    <div class="contact-direct-widget">
+        <button class="contact-direct-btn" id="contactDirectBtn">
+            <span data-i18n="contact-direct-btn">Связаться напрямую</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </button>
+        <div class="contact-direct-menu" id="contactDirectMenu">
+            <a href="https://t.me/alex_proweb" target="_blank" class="contact-option">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.64 8.8C16.49 10.38 15.84 14.22 15.51 15.99C15.37 16.74 15.09 16.99 14.83 17.02C14.25 17.07 13.81 16.64 13.25 16.27C12.37 15.69 11.87 15.33 11.02 14.77C10.03 14.12 10.67 13.76 11.24 13.18C11.39 13.03 13.95 10.7 14 10.49C14.0069 10.4582 14.006 10.4252 13.9973 10.3938C13.9886 10.3624 13.9724 10.3337 13.95 10.31C13.89 10.26 13.81 10.28 13.74 10.29C13.65 10.31 12.25 11.24 9.52 13.08C9.12 13.35 8.76 13.49 8.44 13.48C8.08 13.47 7.4 13.28 6.89 13.11C6.26 12.91 5.77 12.8 5.81 12.45C5.83 12.27 6.08 12.09 6.55 11.9C9.47 10.63 11.41 9.79 12.38 9.39C15.16 8.23 15.73 8.03 16.11 8.03C16.19 8.03 16.38 8.05 16.5 8.15C16.6 8.23 16.63 8.34 16.64 8.42C16.63 8.48 16.65 8.66 16.64 8.8Z"
+                        fill="currentColor" />
+                </svg>
+                <span>Telegram</span>
+            </a>
+            <a href="https://wa.me/37367732256" target="_blank" class="contact-option">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M17.472 14.382C17.015 14.154 14.963 13.145 14.567 13.001C14.172 12.857 13.889 12.785 13.606 13.242C13.323 13.699 12.553 14.647 12.301 14.93C12.049 15.213 11.797 15.244 11.34 15.016C10.883 14.788 9.431 14.316 7.713 12.785C6.374 11.594 5.486 10.126 5.234 9.669C4.982 9.212 5.206 8.976 5.434 8.748C5.64 8.542 5.891 8.212 6.119 7.96C6.347 7.708 6.419 7.517 6.563 7.234C6.707 6.951 6.635 6.699 6.521 6.471C6.407 6.243 5.525 4.185 5.16 3.271C4.795 2.357 4.43 2.479 4.178 2.479C3.926 2.479 3.643 2.479 3.36 2.479C3.077 2.479 2.62 2.593 2.225 3.05C1.83 3.507 0.759 4.516 0.759 6.574C0.759 8.632 2.256 10.629 2.484 10.912C2.712 11.195 5.486 15.485 9.692 17.274C10.719 17.727 11.524 17.996 12.153 18.208C13.18 18.543 14.115 18.512 14.863 18.398C15.703 18.284 17.381 17.397 17.746 16.418C18.111 15.439 18.111 14.647 17.997 14.461C17.883 14.275 17.6 14.161 17.143 13.933L17.472 14.382ZM12.05 21.785H12.047C10.286 21.785 8.556 21.301 7.047 20.394L6.686 20.182L2.897 21.214L3.947 17.518L3.711 17.144C2.721 15.579 2.196 13.771 2.196 11.932C2.196 6.684 6.434 2.446 11.682 2.446C14.207 2.446 16.579 3.415 18.364 5.2C20.149 6.985 21.118 9.357 21.118 11.882C21.118 17.13 16.88 21.368 11.632 21.368L12.05 21.785Z"
+                        fill="currentColor" />
+                </svg>
+                <span>WhatsApp</span>
+            </a>
+            <a href="mailto:iv.front.dev@gmail.com" class="contact-option">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"
+                        fill="currentColor" />
+                </svg>
+                <span>Email</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
