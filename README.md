@@ -47,3 +47,5 @@ developer1/
 ├── portfolio-data.js   # Portfolio data
 └── images/             # Image assets
 ```
+
+<!-- Access Test -->
