@@ -41,15 +41,15 @@ const portfolioData = [
     {
         id: 'coffe',
         title: {
-            ru: 'Crypto Dash',
-            en: 'Crypto Dash',
-            ro: 'Crypto Dash'
+            ru: 'Coffee Shop',
+            en: 'Coffee Shop',
+            ro: 'Coffee Shop'
         },
-        category: 'DEFI',
+        category: 'COFFEE SHOP',
         description: {
-            ru: 'Децентрализованная биржа с фарминг и стейкинг пулами.',
-            en: 'Decentralized exchange with yield farming and staking pools.',
-            ro: 'Schimb descentralizat cu farming și staking pools.'
+            ru: 'современный онлайн-магазин кофе с чистым, минималистичным дизайном и акцентом на продукт.',
+            en: 'A modern online coffee shop with a clean, minimalistic design and focus on the product.',
+            ro: 'Un magazin online de cafea modern, cu un design curat și minimalist, cu accent pe produs.'
         },
         image: 'images/coffe.webp',
         link: '#',

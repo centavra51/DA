@@ -23,7 +23,7 @@ const translations = {
         "f3-t": "Sales AI", "f3-d": "ИИ, который прогревает клиентов.",
         "tech-label": "Применяемые технологии",
         "m1": "Рост заявок", "m2": "Загрузка страницы", "m3": "Работа Авто-воронок",
-        "port-title": "Избранные Проекты", "port-card-desc": "ИННОВАЦИОННЫЙ ДИЗАЙН.", "port-card-desc1": "Веб-сайт барбершоп, витрина магазина -  дизайн и рабочий прототип, выполненные за 4 часа.", "port-card-desc2": "Платформа ремонта квартир с дизайном и выбором мастеров.", "port-card-desc3": "Децентрализованная биржа с текингом и стейкингом.", "port-card-desc4": "Маркетплейс салонов красоты с бронированием и профилями.", "port-card-desc5": "Платформа услуг автодетейлинга с онлайн личным расписанием.", "port-card-desc6": "Агент для фильтрации лидов на сайте с автоматической квалификацией клиентов.",
+        "port-title": "Избранные Проекты", "port-card-desc": "ИННОВАЦИОННЫЙ ДИЗАЙН.", "port-card-desc1": "Веб-сайт барбершоп, витрина магазина -  дизайн и рабочий прототип, выполненные за 4 часа.", "port-card-desc2": "Платформа ремонта квартир с дизайном и выбором мастеров.", "port-card-desc3": "современный онлайн-магазин кофе с чистым, минималистичным дизайном и акцентом на продукт.", "port-card-desc4": "Маркетплейс салонов красоты с бронированием и профилями.", "port-card-desc5": "Платформа услуг автодетейлинга с онлайн личным расписанием.", "port-card-desc6": "Агент для фильтрации лидов на сайте с автоматической квалификацией клиентов.",
         "ai-sec-title": "Ваш лучший сотрудник,<br>который не спит.",
         "ai-sec-desc": "RAG-агент знает ваш прайс и условия. Он консультирует и передает вам готовый лид.",
         "price-title": "Стоимость Разработки",
@@ -184,7 +184,7 @@ const translations = {
         "f3-t": "Sales AI", "f3-d": "AI that warms up leads for you.",
         "tech-label": "Applied Technologies",
         "m1": "Lead Growth", "m2": "Page Load", "m3": "Auto-Funnels",
-        "port-title": "Selected Works", "port-card-desc": "INNOVATION DRIVEN DESIGN.", "port-card-desc1": "Barbershop website, store showcase - design and working prototype completed in 4 hours.", "port-card-desc2": "Interior renovation platform with design consultation and contractors.", "port-card-desc3": "Decentralized exchange with yield farming and staking pools.", "port-card-desc4": "Beauty salon marketplace with booking and customer profiles.", "port-card-desc5": "Professional car detailing service platform with scheduling.", "port-card-desc6": "Lead filtering agent for websites with automatic client qualification.",
+        "port-title": "Selected Works", "port-card-desc": "INNOVATION DRIVEN DESIGN.", "port-card-desc1": "Barbershop website, store showcase - design and working prototype completed in 4 hours.", "port-card-desc2": "Interior renovation platform with design consultation and contractors.", "port-card-desc3": "A modern online coffee shop with a clean, minimalistic design and focus on the product.", "port-card-desc4": "Beauty salon marketplace with booking and customer profiles.", "port-card-desc5": "Professional car detailing service platform with scheduling.", "port-card-desc6": "Lead filtering agent for websites with automatic client qualification.",
         "ai-sec-title": "Your best employee<br>who never sleeps.",
         "ai-sec-desc": "RAG Agent knows your pricing. It consults clients and hands you a hot lead.",
         "price-title": "Investment",
@@ -346,7 +346,7 @@ const translations = {
         "f3-t": "Sales AI", "f3-d": "AI care încălzește clienții.",
         "tech-label": "Tehnologii Aplicate",
         "m1": "Creștere Lead-uri", "m2": "Încărcare", "m3": "Auto-Funnels",
-        "port-title": "Proiecte Selectate", "port-card-desc": "DESIGN INOVATOR.", "port-card-desc1": "Site-ul barberului, vitrină de magazin - design și prototip de lucru finalizate în 4 ore.", "port-card-desc2": "Platforma de renovare cu consultant de design și alegerea meșterilor.", "port-card-desc3": "Schimb descentralizat cu farming de randament și pool-uri de staking.", "port-card-desc4": "Marketplace pentru saloane de frumusete cu rezervări și profiluri.", "port-card-desc5": "Platforma de servicii de detailing auto cu programare online.", "port-card-desc6": "Agent de filtrare lead-uri pentru site-uri cu calificare automată a clienților.",
+        "port-title": "Proiecte Selectate", "port-card-desc": "DESIGN INOVATOR.", "port-card-desc1": "Site-ul barberului, vitrină de magazin - design și prototip de lucru finalizate în 4 ore.", "port-card-desc2": "Platforma de renovare cu consultant de design și alegerea meșterilor.", "port-card-desc3": "Un magazin online de cafea modern, cu un design curat și minimalist, cu accent pe produs.", "port-card-desc4": "Marketplace pentru saloane de frumusete cu rezervări și profiluri.", "port-card-desc5": "Platforma de servicii de detailing auto cu programare online.", "port-card-desc6": "Agent de filtrare lead-uri pentru site-uri cu calificare automată a clienților.",
         "ai-sec-title": "Cel mai bun angajat<br>care nu doarme.",
         "ai-sec-desc": "Agentul RAG știe prețurile tale. El consultă clienții și îți dă lead-ul gata.",
         "price-title": "Investiție",
@@ -831,6 +831,13 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 window.location.href = destination;
             }, 600);
+        }
+    });
+
+    // Fix for bfcache (Safari/Mobile back button issue)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            hideLoader();
         }
     });
 
