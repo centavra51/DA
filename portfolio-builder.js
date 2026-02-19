@@ -42,11 +42,15 @@ function renderPortfolioCards() {
         link.href = project.link;
         link.className = 'bento-card-link';
 
+        const categoryText = typeof project.category === 'object'
+            ? (project.category[currentLang] || project.category.ru || '')
+            : (project.category || '');
+
         // Create overlay with description
         const overlay = document.createElement('div');
         overlay.className = 'bento-overlay';
         overlay.innerHTML = `
-            <span class="tech-tag">${project.category}</span>
+            <span class="tech-tag">${categoryText}</span>
             <h3>${project.title[currentLang] || project.title.ru}</h3>
             <p class="small-desc">${project.description[currentLang] || project.description.ru}</p>
         `;
@@ -77,8 +81,13 @@ function updatePortfolioLanguage(lang) {
         if (cards[index]) {
             const overlay = cards[index].querySelector('.bento-overlay');
             if (overlay) {
+                const tag = overlay.querySelector('.tech-tag');
                 const title = overlay.querySelector('h3');
                 const desc = overlay.querySelector('.small-desc');
+                const categoryText = typeof project.category === 'object'
+                    ? (project.category[currentLang] || project.category.ru || '')
+                    : (project.category || '');
+                if (tag) tag.textContent = categoryText;
                 if (title) title.textContent = project.title[currentLang] || project.title.ru;
                 if (desc) desc.textContent = project.description[currentLang] || project.description.ru;
             }

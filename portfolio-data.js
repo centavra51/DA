@@ -114,17 +114,21 @@ const portfolioData = [
     {
         id: 'wordpress-elementor',
         title: {
-            ru: 'WordPress + Elementor',
-            en: 'WordPress + Elementor',
-            ro: 'WordPress + Elementor'
+            ru: 'Лендинг кастомный код',
+            en: 'Custom Code Landing Page',
+            ro: 'Landing Page cu Cod Personalizat'
         },
-        category: 'WEB DEVELOPMENT',
+        category: {
+            ru: 'КАСТОМНЫЙ КОД',
+            en: 'CUSTOM CODE',
+            ro: 'COD PERSONALIZAT'
+        },
         description: {
-            ru: 'Разработка сайтов на WordPress с помощью Elementor - быстро, красиво, функционально.',
-            en: 'WordPress website development with Elementor - fast, beautiful, functional.',
-            ro: 'Dezvoltare site-uri WordPress cu Elementor - rapid, frumos, funcțional.'
+            ru: 'Лендинг для услуг Amazon Creator, с AI-чатом 24/7.',
+            en: 'Landing page for Amazon Creator services with a 24/7 AI chat.',
+            ro: 'Landing page pentru servicii Amazon Creator, cu chat AI 24/7.'
         },
-        image: 'images/beauty.webp', // Temporary placeholder - replace with wordpress-elementor.webp
+        image: 'images/amzcreat.webp',
         link: '#',
         gridArea: 'auto',
         size: 'medium'
