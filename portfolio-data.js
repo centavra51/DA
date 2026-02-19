@@ -114,9 +114,9 @@ const portfolioData = [
     {
         id: 'wordpress-elementor',
         title: {
-            ru: 'Лендинг кастомный код',
-            en: 'Custom Code Landing Page',
-            ro: 'Landing Page cu Cod Personalizat'
+            ru: 'Амазон креатор',
+            en: 'Amazon Creator',
+            ro: 'Amazon Creator'
         },
         category: {
             ru: 'КАСТОМНЫЙ КОД',
