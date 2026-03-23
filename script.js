@@ -101,18 +101,21 @@ const initPremiumBackground = () => {
     animate();
 
     // GSAP scroll reaction
-    gsap.to(particles, {
-        scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: 1
-        },
-        vx: "+=1",
-        vy: "+=1",
-        stagger: 0.1
-    });
-};
+    if (typeof ScrollTrigger !== 'undefined') {
+        const triggerEl = document.querySelector(".hero") || document.querySelector(".section") || "body";
+        gsap.to(particles, {
+            scrollTrigger: {
+                trigger: triggerEl,
+                start: "top top",
+                end: "bottom top",
+                scrub: 1
+            },
+            vx: "+=1",
+            vy: "+=1",
+            stagger: 0.1
+        });
+    }
+}
 
 document.addEventListener('DOMContentLoaded', initPremiumBackground);
 
@@ -623,8 +626,12 @@ function changeLang(lang) {
         const key = el.getAttribute('data-i18n-placeholder');
         if (translations[lang][key]) el.placeholder = translations[lang][key];
     });
-    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${lang}'`)) {
+            btn.classList.add('active');
+        }
+    });
     displayWelcomeMessage();
 
     // Update promo badge text on language change
@@ -788,6 +795,15 @@ window.addEventListener('scroll', () => {
     else navbar.classList.remove('scrolled');
 });
 
+function showLoader() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.display = 'flex';
+        loader.classList.remove('hide');
+        loader.classList.add('show');
+    }
+}
+
 function hideLoader() {
     const loader = document.getElementById('loader');
     const bar = document.getElementById('progress');
@@ -800,6 +816,7 @@ function hideLoader() {
     if (loader) {
         setTimeout(() => {
             loader.classList.add('hide');
+            loader.classList.remove('show');
             setTimeout(() => {
                 loader.style.display = 'none';
             }, 800);
@@ -838,12 +855,15 @@ document.addEventListener('DOMContentLoaded', () => {
             !link.href.includes('#') &&
             link.target !== '_blank') {
 
-            e.preventDefault();
-            const destination = link.href;
-            showLoader();
-            setTimeout(() => {
-                window.location.href = destination;
-            }, 600);
+            const loader = document.getElementById('loader');
+            if (loader) {
+                e.preventDefault();
+                const destination = link.href;
+                showLoader();
+                setTimeout(() => {
+                    window.location.href = destination;
+                }, 600);
+            }
         }
     });
 
