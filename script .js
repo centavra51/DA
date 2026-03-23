@@ -573,7 +573,7 @@ async function sendMessage() {
 
     try {
         // Production webhook URL for n8n "Rag Sale" workflow
-        const WEBHOOK_URL = 'https://auto.amz-creator.com/webhook/chat-lead-gen';
+        const WEBHOOK_URL = 'https://auto.amz-creator.com/webhook/c4e506bd-bee9-4fdd-a004-255d5db25bea';
 
         const response = await fetch(WEBHOOK_URL, {
             method: 'POST',

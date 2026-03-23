@@ -1,6 +1,29 @@
 // Portfolio cards data
 // To add a new project, simply add a new object to this array
 const portfolioData = [
+      {
+        id: 'Premium-Lending',
+        title: {
+            ru: 'Premium Studio',
+            en: 'Premium Studio',
+            ro: 'Premium Studio'
+        },
+        category: {
+            ru: 'VibeCoding',
+            en: 'VibeCoding',
+            ro: 'VibeCoding'
+        },
+        description: {
+            ru: 'Лендинг для услуг Дизайн студии.',
+            en: 'Landing page for Design Studio .',
+            ro: 'Landing page pentru servicii Design Studio.'
+        },
+        image: 'images/premium 1.webp',
+        link: 'https://preumium.vercel.app/',
+        gridArea: 'auto',
+        size: 'medium'
+    },
+
     {
         id: 'barber',
         title: {
@@ -15,7 +38,7 @@ const portfolioData = [
             ro: 'Site-ul barberului, vitrină de magazin - design și prototip de lucru finalizate în 4 ore.'
         },
         image: 'images/barber.webp',
-        link: '#',
+        link: 'https://da.amz-creator.com/works/barber/',
         gridArea: 'main', // Uses area-main class for large card
         size: 'large'
     },
@@ -33,7 +56,7 @@ const portfolioData = [
             ro: 'Platforma de renovare cu consultant de design și alegerea meșterilor.'
         },
         image: 'images/renovation.webp',
-        link: '#',
+        link: 'https://da.amz-creator.com/works/remont/1/',
         gridArea: 'pink', // Uses area-pink class
         size: 'medium',
         gradient: true
@@ -52,7 +75,7 @@ const portfolioData = [
             ro: 'Un magazin online de cafea modern, cu un design curat și minimalist, cu accent pe produs.'
         },
         image: 'images/coffe.webp',
-        link: '#',
+        link: 'https://da.amz-creator.com/works/coffe/',
         gridArea: 'wide', // Uses area-wide class
         size: 'large'
     },
@@ -70,7 +93,7 @@ const portfolioData = [
             ro: 'Marketplace pentru saloane de frumusete cu rezervări și profiluri.'
         },
         image: 'images/beauty.webp',
-        link: '#',
+        link: 'https://da.amz-creator.com/works/beauty/',
         gridArea: 'std', // Uses area-std class
         size: 'medium'
     },
@@ -87,8 +110,8 @@ const portfolioData = [
             en: 'Professional car detailing service platform with scheduling.',
             ro: 'Platforma de servicii de detailing auto cu programare online.'
         },
-        image: 'images/deteil.webp',
-        link: '#',
+        image: 'images/deteilru.webp',
+        link: 'https://car-stile.ru/',
         gridArea: 'tech', // Uses area-tech class
         size: 'medium',
         gray: true
@@ -129,10 +152,79 @@ const portfolioData = [
             ro: 'Landing page pentru servicii Amazon Creator, cu chat AI 24/7.'
         },
         image: 'images/amzcreat.webp',
-        link: '#',
+        link: 'https://amz-creator.com/',
         gridArea: 'auto',
         size: 'medium'
     },
+    {
+    id: 'Contractor-Service',
+    title: {
+        ru: 'Сервис мастеров',
+        en: 'Contractor Services',
+        ro: 'Servicii Meșteri'
+    },
+    category: {
+        ru: 'VibeCoding',
+        en: 'VibeCoding',
+        ro: 'VibeCoding'
+    },
+    description: {
+        ru: 'Лендинг для сервиса подрядчиков и мастеров различных услуг.',
+        en: 'Landing page for contractor and home service providers.',
+        ro: 'Landing page pentru servicii de meșteri și contractori.'
+    },
+    image: 'images/service.webp',
+    link: 'https://service-lemon-two.vercel.app/',
+    gridArea: 'auto',
+    size: 'medium'
+},
+
+{
+    id: 'Plumber-SEO',
+    title: {
+        ru: 'Сантехник SEO',
+        en: 'Plumber SEO Landing',
+        ro: 'Landing SEO Instalator'
+    },
+    category: {
+        ru: 'VibeCoding',
+        en: 'VibeCoding',
+        ro: 'VibeCoding'
+    },
+    description: {
+        ru: 'Лендинг для мастера-сантехника с десятью SEO-оптимизированными страницами.',
+        en: 'Landing page for a plumber with 10 SEO optimized pages.',
+        ro: 'Landing page pentru instalator cu 10 pagini optimizate SEO.'
+    },
+    image: 'images/santehnic.webp',
+    link: 'https://santehnic.vercel.app/',
+    gridArea: 'auto',
+    size: 'medium'
+},
+
+{
+    id: 'Electrician-Pro',
+    title: {
+        ru: 'Электрик PRO',
+        en: 'Electrician PRO',
+        ro: 'Electrician PRO'
+    },
+    category: {
+        ru: 'VibeCoding',
+        en: 'VibeCoding',
+        ro: 'VibeCoding'
+    },
+    description: {
+        ru: 'Лендинг для электрика с SEO-страницами, калькулятором услуг, виджетами и формой заказа.',
+        en: 'Landing page for an electrician with SEO pages, service calculator, widgets and order form.',
+        ro: 'Landing page pentru electrician cu pagini SEO, calculator servicii, widget și formular comandă.'
+    },
+    image: 'images/prewiuelectric.webp',
+    link: 'https://electric-eta.vercel.app/',
+    gridArea: 'auto',
+    size: 'medium'
+}
+    
 
 
     // ========================================
