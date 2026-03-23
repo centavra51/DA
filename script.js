@@ -1,16 +1,126 @@
-const canvas = document.getElementById('parallax-canvas');
-const ctx = canvas ? canvas.getContext('2d') : null;
-const navbar = document.getElementById('navbar');
+/**
+ * Digital Architect - Premium GSAP Background Animation
+ * Replaces the legacy frame-based parallax with a high-performance Neural Network effect.
+ */
 
-const frameCount = 140;
-const currentFrame = index => (
-    `https://mbajvfzehudjjwvvkujw.supabase.co/storage/v1/object/public/Webp%20Supabase/frame_${index.toString().padStart(3, '0')}_delay-0.04s.webp`
-);
+const initPremiumBackground = () => {
+    const container = document.getElementById('bg-animation-container');
+    if (!container) return;
+
+    const canvas = document.createElement('canvas');
+    container.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    let width, height, particles = [];
+    const particleCount = 60;
+    const connectionRadius = 150;
+    const mouse = { x: null, y: null, radius: 150 };
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+    });
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 2 + 1;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (this.x < 0 || this.x > width) this.vx *= -1;
+            if (this.y < 0 || this.y > height) this.vy *= -1;
+            
+            // Interaction with mouse
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < mouse.radius) {
+                if (mouse.x < this.x && this.x < width - this.size * 10) this.x += 1;
+                if (mouse.x > this.x && this.x > this.size * 10) this.x -= 1;
+                if (mouse.y < this.y && this.y < height - this.size * 10) this.y += 1;
+                if (mouse.y > this.y && this.y > this.size * 10) this.y -= 1;
+            }
+        }
+
+        draw() {
+            ctx.fillStyle = 'rgba(40, 208, 200, 0.5)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    const init = () => {
+        width = canvas.width = container.offsetWidth;
+        height = canvas.height = container.offsetHeight;
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+    };
+
+    const animate = () => {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        connect();
+        requestAnimationFrame(animate);
+    };
+
+    const connect = () => {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                let dx = particles[i].x - particles[j].x;
+                let dy = particles[i].y - particles[j].y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < connectionRadius) {
+                    let opacity = 1 - (distance / connectionRadius);
+                    ctx.strokeStyle = `rgba(40, 208, 200, ${opacity * 0.2})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    };
+
+    window.addEventListener('resize', init);
+    init();
+    animate();
+
+    // GSAP scroll reaction
+    gsap.to(particles, {
+        scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1
+        },
+        vx: "+=1",
+        vy: "+=1",
+        stagger: 0.1
+    });
+};
+
+document.addEventListener('DOMContentLoaded', initPremiumBackground);
 
 const translations = {
     ru: {
         "nav-port": "Проекты", "nav-services": "Услуги", "nav-ai-agent": "AI Агент", "nav-price": "Стоимость", "nav-contact": "Начать проект",
         "hero-label": "WEB DEVELOPMENT & AI 2026",
+        "hero-h1-main": "Ваш сайт должен <span class=\"accent-orange\">приносить деньги</span>",
         "hero-h1-1": "Не сливайте <span style=\"color: var(--accent);\">бюджет.</span>", "hero-h1-2": "Инвестируйте в <span style=\"color: var(--accent);\">прибыль.</span>",
         "hero-desc": "Ваш сайт должен приносить деньги. Создаю системы, превращающие посетителей в клиентов.",
         "btn-main": "Рассчитать стоимость", "btn-chat": "Спросить у AI →",
@@ -172,6 +282,7 @@ const translations = {
     en: {
         "nav-port": "Projects", "nav-services": "Services", "nav-ai-agent": "AI Agent", "nav-price": "Pricing", "nav-contact": "Start Project",
         "hero-label": "WEB DEVELOPMENT & AI 2026",
+        "hero-h1-main": "Your website should <span class=\"accent-orange\">make money</span>",
         "hero-h1-1": "Stop Wasting <span style=\"color: var(--accent);\">Budget.</span>", "hero-h1-2": "Invest in <span style=\"color: var(--accent);\">Profit.</span>",
         "hero-desc": "Your site should make money. I build systems that turn visitors into clients.",
         "btn-main": "Get Quote", "btn-chat": "Ask AI →",
@@ -334,6 +445,7 @@ const translations = {
     ro: {
         "nav-port": "Proiecte", "nav-services": "Servicii", "nav-ai-agent": "AI Agent", "nav-price": "Prețuri", "nav-contact": "Începe Proiect",
         "hero-label": "WEB DEVELOPMENT & AI 2026",
+        "hero-h1-main": "Site-ul tău trebuie să <span class=\"accent-orange\">facă bani</span>",
         "hero-h1-1": "Nu pierde <span style=\"color: var(--accent);\">bugetul.</span>", "hero-h1-2": "Investește în <span style=\"color: var(--accent);\">profit.</span>",
         "hero-desc": "Site-ul tău trebuie să facă bani. Creez sisteme care convertesc vizitatorii.",
         "btn-main": "Vezi Prețuri", "btn-chat": "Întreabă AI →",
@@ -676,129 +788,30 @@ window.addEventListener('scroll', () => {
     else navbar.classList.remove('scrolled');
 });
 
-const images = [];
-const airbnb = { frame: 0 };
-
 function hideLoader() {
     const loader = document.getElementById('loader');
+    const bar = document.getElementById('progress');
+    const percent = document.getElementById('percent');
+    
+    // Smoothly complete the progress bar
+    if (bar) bar.style.width = '100%';
+    if (percent) percent.innerText = '100%';
+
     if (loader) {
-        loader.classList.add('hide');
         setTimeout(() => {
-            loader.style.display = 'none';
-        }, 800);
+            loader.classList.add('hide');
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 800);
+        }, 300); // Small pause at 100% for better UX
     }
 }
 
-function showLoader() {
-    let loader = document.getElementById('loader');
-    if (!loader) {
-        // Re-create loader if it was removed
-        const loaderHTML = `
-            <div id="loader">
-                <div class="loader-content">
-                    <div class="brand-font">Digital.</div>
-                    <div class="progress-bar">
-                        <div id="progress" style="width: 100%"></div>
-                    </div>
-                </div>
-            </div>`;
-        document.body.insertAdjacentHTML('afterbegin', loaderHTML);
-        loader = document.getElementById('loader');
-    }
-    loader.style.display = 'flex';
-    loader.classList.remove('hide');
-    loader.classList.add('show');
-}
-
-function preloadImages() {
-    let loaded = 0;
-    const updateProgress = () => {
-        loaded++;
-        const p = Math.floor((loaded / frameCount) * 100);
-        const bar = document.getElementById('progress');
-        const txt = document.getElementById('percent');
-        if (bar) bar.style.width = p + '%';
-        if (txt) txt.innerText = p + '%';
-        if (loaded === frameCount) {
-            hideLoader();
-        }
-    };
-    for (let i = 0; i < frameCount; i++) {
-        const img = new Image();
-        img.src = currentFrame(i);
-        img.onload = updateProgress;
-        img.onerror = updateProgress;
-        images.push(img);
-    }
-}
-
-function resizeCanvas() {
-    if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    render();
-}
-
-function render() {
-    if (!canvas || !ctx) return;
-    const img = images[airbnb.frame];
-    if (img && img.complete && img.naturalHeight !== 0) {
-        const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
-        const x = (canvas.width / 2) - (img.width / 2) * scale;
-        const y = (canvas.height / 2) - (img.height / 2) * scale;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-    }
-}
-
-window.addEventListener('scroll', () => {
-    if (!canvas) return;
-    const scrollTop = window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollFraction = maxScroll > 0 ? scrollTop / maxScroll : 0;
-    const frameIndex = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount * 1.5));
-    airbnb.frame = frameIndex;
-    requestAnimationFrame(render);
-}, { passive: true });
-
-// Only preload parallax images if canvas exists
-if (canvas) {
-    // Быстрая загрузка без ожидания всех кадров
-    // Загружаем только первые несколько кадров для плавного старта
-    let loaded = 0;
-    const quickLoadCount = 10; // Загружаем только 10 кадров для быстрого старта
-
-    const updateProgress = () => {
-        loaded++;
-        const p = Math.floor((loaded / quickLoadCount) * 100);
-        const bar = document.getElementById('progress');
-        if (bar) bar.style.width = p + '%';
-        if (loaded === quickLoadCount) {
-            hideLoader();
-            // Загружаем остальные кадры в фоне
-            for (let i = quickLoadCount; i < frameCount; i++) {
-                const img = new Image();
-                img.src = currentFrame(i);
-                images.push(img);
-            }
-        }
-    };
-
-    // Загружаем только первые кадры
-    for (let i = 0; i < quickLoadCount; i++) {
-        const img = new Image();
-        img.src = currentFrame(i);
-        img.onload = updateProgress;
-        img.onerror = updateProgress; // Продолжаем даже при ошибке
-        images.push(img);
-    }
-
-    window.addEventListener('resize', resizeCanvas, { passive: true });
-    resizeCanvas();
-} else {
-    // No canvas - hide loader immediately
-    setTimeout(hideLoader, 300);
-}
+// Parallax logic removed. Assets are now lightweight.
+// We trigger the loader hide almost immediately.
+window.addEventListener('load', () => {
+    setTimeout(hideLoader, 100);
+});
 
 // Set default language and display welcome message and setup chat observer
 document.addEventListener('DOMContentLoaded', () => {

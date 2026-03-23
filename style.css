@@ -63,11 +63,9 @@ h3,
 h4,
 .serif-title {
     font-family: var(--font-sans);
-    font-weight: 400;
-    line-height: 1;
-    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1.1;
     letter-spacing: 0.5px;
-    font-variation-settings: 'wght' 350;
 }
 
 h1 {
@@ -78,15 +76,17 @@ h1 {
     margin-right: auto;
     white-space: normal;
     overflow: visible;
-    font-weight: 300;
-    text-transform: uppercase;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff 0%, #28d0c8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 h2 {
     font-size: clamp(2.5rem, 5vw, 3.5rem);
     margin-bottom: 20px;
-    font-weight: 300;
-    text-transform: uppercase;
+    font-weight: 700;
     letter-spacing: 0.5px;
 }
 
@@ -99,8 +99,9 @@ h2 {
 
 p {
     font-size: 1.1rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 300;
+    line-height: 1.6;
 }
 
 .tech-mono {
@@ -194,6 +195,15 @@ p {
     letter-spacing: 1px;
 }
 
+.accent-orange {
+    color: var(--accent) !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--accent) !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    font-weight: 700;
+}
+
 .nav-center-group {
     flex-grow: 1;
     display: flex;
@@ -263,19 +273,37 @@ p {
     position: relative;
 }
 
-#parallax-canvas {
-    position: fixed;
+#bg-animation-container {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
-    z-index: -1;
-    opacity: 0.5;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0a 100%);
+}
+
+#bg-animation-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.4) 100%);
+    z-index: 2;
+    pointer-events: none;
 }
 
 .hero-content {
     position: relative;
-    z-index: 2;
+    z-index: 3; /* Changed from 2 to 3 to be above overlay */
     padding-top: 80px;
     max-width: 900px;
     text-align: center;
